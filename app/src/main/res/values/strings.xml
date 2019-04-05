@@ -12,4 +12,7 @@
     <string name="error_fill_name">Пожалуйста, заполните поле</string>
     <string name="stay_at_home">stay at home.</string>
     <string name="petlander">Petlander</string>
+    <string name="add_photo">Добавить фотографию</string>
+    <string name="btn_add">Добавить</string>
+    <string name="hint_description">Описание</string>
 </resources>
