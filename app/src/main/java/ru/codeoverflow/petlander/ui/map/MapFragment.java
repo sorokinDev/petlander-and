@@ -22,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.codeoverflow.petlander.MainActivity;
-import ru.codeoverflow.petlander.ui.Cards.Cards;
 import ru.codeoverflow.petlander.ui.base.BaseFragment;
 import ru.codeoverflow.petlander.R;
 
@@ -56,13 +55,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
 
     }
-
-
-
     public static MapFragment newInstance() {
         return new MapFragment();
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
