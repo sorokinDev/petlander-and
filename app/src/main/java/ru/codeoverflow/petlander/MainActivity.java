@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
+import ru.codeoverflow.petlander.ui.add.AddFragment;
 import ru.codeoverflow.petlander.ui.base.BaseActivity;
 import ru.codeoverflow.petlander.ui.feed.FeedFragment;
 import ru.codeoverflow.petlander.ui.map.MapFragment;
@@ -34,23 +35,27 @@ public class MainActivity extends BaseActivity {
 
         bottomNav.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
-                case R.id.nav_account:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, ProfileFragment.newInstance()).commit();
-                    return true;
-            }
-            switch (menuItem.getItemId()) {
                 case R.id.nav_feed:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, FeedFragment.newInstance()).commit();
                     return true;
-            }
-            switch (menuItem.getItemId()){
                 case R.id.nav_map:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, MapFragment.newInstance()).commit();
                     return true;
+                case R.id.nav_add:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, AddFragment.newInstance()).commit();
+                    return true;
+                case R.id.nav_account:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, ProfileFragment.newInstance()).commit();
+                    return true;
+
 
             }
             return true;
         });
+
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, FeedFragment.newInstance()).commit();
+        }
 
     }
 

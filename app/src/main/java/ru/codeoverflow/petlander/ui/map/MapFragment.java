@@ -33,7 +33,6 @@ import androidx.core.app.ActivityCompat;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 import ru.codeoverflow.petlander.MainActivity;
-import ru.codeoverflow.petlander.ui.Cards.Cards;
 import ru.codeoverflow.petlander.ui.base.BaseFragment;
 import ru.codeoverflow.petlander.R;
 
