@@ -14,6 +14,7 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.codeoverflow.petlander.ui.base.BaseFragment;
+import ru.codeoverflow.petlander.ui.map.MapFragment;
 
 public class MatchesFragment extends BaseFragment {
 
@@ -25,6 +26,10 @@ public class MatchesFragment extends BaseFragment {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_matches;
+    }
+
+    public static MatchesFragment newInstance() {
+        return new MatchesFragment();
     }
 
     @Override
@@ -92,12 +97,39 @@ public class MatchesFragment extends BaseFragment {
             }
         });
 
-    }
+        // Костыльное решение
 
+        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+        userDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String userID = dataSnapshot.getKey();
+                    String name = "";
+                    String profileImageUrl = "";
+                    if(dataSnapshot.child("name").getValue()!=null){
+                        name = dataSnapshot.child("name").getValue().toString();
+                    }
+                    if(dataSnapshot.child("profileImageUrl").getValue()!=null){
+                        profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
+                    }
+
+
+                    MatchesObject obj = new MatchesObject(userID, name, profileImageUrl);
+                    resultsMatches.add(obj);
+                    mMatchesAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
     private ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
     private List<MatchesObject> getDataSetMatches() {
         return resultsMatches;
     }
-
-
 }
