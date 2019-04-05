@@ -7,13 +7,40 @@
     android:background="@color/colorPrimary"
     tools:context=".ui.login.LoginActivity">
 
+    <TextView
+        android:id="@+id/tv_petlander"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/petlander"
+        app:layout_constraintBottom_toTopOf="@+id/tv_stay_at_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="60sp" />
+
+    <TextView
+        android:id="@+id/tv_stay_at_home"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="@string/stay_at_home"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="28dp"
+        android:insetBottom="0dp"
+        android:insetTop="0dp"
         app:layout_constraintBottom_toTopOf="@+id/iv_login_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +52,8 @@
     <ImageView
         android:id="@+id/iv_login_image"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="#2e3192"
+        android:layout_height="wrap_content"
+        android:src="@drawable/login_dog"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
