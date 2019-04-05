@@ -1,32 +1,25 @@
 package ru.codeoverflow.petlander.ui.matches;
 
 import android.view.View;
-
 import ru.codeoverflow.petlander.R;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import ru.codeoverflow.petlander.ui.base.BaseActivity;
 import ru.codeoverflow.petlander.ui.base.BaseFragment;
 
 public class MatchesFragment extends BaseFragment {
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mMatchesAdapter;
     private RecyclerView.LayoutManager mMatchesLayoutManager;
-
-    private String cusrrentUserID;
-
+    private String userID;
 
     @Override
     protected int getLayoutResId() {
@@ -36,9 +29,9 @@ public class MatchesFragment extends BaseFragment {
     @Override
     protected void onSetupView(View rootView) {
 
-        cusrrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(true);
         mMatchesLayoutManager = new LinearLayoutManager(getContext());
@@ -47,13 +40,13 @@ public class MatchesFragment extends BaseFragment {
         mRecyclerView.setAdapter(mMatchesAdapter);
 
         getUserMatchId();
-
     }
-
 
     private void getUserMatchId() {
 
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(cusrrentUserID).child("connections").child("matches");
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(userID).child("connections").child("matches");
+
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,12 +65,12 @@ public class MatchesFragment extends BaseFragment {
     }
 
     private void FetchMatchInformation(String key) {
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
-        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference petsDb = FirebaseDatabase.getInstance().getReference().child("Pets").child(key);
+        petsDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String userId = dataSnapshot.getKey();
+                    String petsID = dataSnapshot.getKey();
                     String name = "";
                     String profileImageUrl = "";
                     if(dataSnapshot.child("name").getValue()!=null){
@@ -88,7 +81,7 @@ public class MatchesFragment extends BaseFragment {
                     }
 
 
-                    MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
+                    MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl);
                     resultsMatches.add(obj);
                     mMatchesAdapter.notifyDataSetChanged();
                 }
