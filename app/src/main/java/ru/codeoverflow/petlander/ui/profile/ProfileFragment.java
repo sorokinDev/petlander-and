@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -70,7 +71,7 @@ public class ProfileFragment extends BaseFragment {
     }
 
     @Override
-    protected void onSetupView(View rootView) {
+    protected void onSetupView(View rootView,Bundle saved) {
         ((AppCompatActivity)getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         mNameField = (EditText)rootView.findViewById(R.id.name);
         mPhoneField = (EditText)rootView.findViewById(R.id.phone);

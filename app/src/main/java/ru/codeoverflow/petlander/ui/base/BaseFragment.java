@@ -14,7 +14,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
 
     protected abstract int getLayoutResId();
-    protected abstract void onSetupView(View rootView);
+    protected abstract void onSetupView(View rootView,Bundle savedInstanceState);
 
     protected View rootView;
     private Unbinder unbinder;
@@ -30,7 +30,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onSetupView(rootView);
+        onSetupView(rootView, savedInstanceState);
     }
 
     @Override

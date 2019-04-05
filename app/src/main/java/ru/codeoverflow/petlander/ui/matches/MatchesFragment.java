@@ -1,5 +1,6 @@
 package ru.codeoverflow.petlander.ui.matches;
 
+import android.os.Bundle;
 import android.view.View;
 import ru.codeoverflow.petlander.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +28,7 @@ public class MatchesFragment extends BaseFragment {
     }
 
     @Override
-    protected void onSetupView(View rootView) {
+    protected void onSetupView(View rootView,Bundle saved) {
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

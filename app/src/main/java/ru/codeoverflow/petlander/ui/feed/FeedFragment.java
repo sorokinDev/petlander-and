@@ -1,5 +1,6 @@
 package ru.codeoverflow.petlander.ui.feed;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class FeedFragment extends BaseFragment {
     }
 
     @Override
-    protected void onSetupView(View rootView) {
+    protected void onSetupView(View rootView, Bundle saved) {
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(rootView.findViewById(R.id.toolbar));
 
         petsDb = FirebaseDatabase.getInstance().getReference().child("Pets");

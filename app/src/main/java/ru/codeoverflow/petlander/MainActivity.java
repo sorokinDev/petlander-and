@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import ru.codeoverflow.petlander.ui.base.BaseActivity;
 import ru.codeoverflow.petlander.ui.feed.FeedFragment;
+import ru.codeoverflow.petlander.ui.map.MapFragment;
 import ru.codeoverflow.petlander.ui.profile.ProfileFragment;
 import ru.codeoverflow.petlander.util.NavUtil;
 import ru.codeoverflow.petlander.util.SharedPrefUtil;
@@ -41,6 +42,12 @@ public class MainActivity extends BaseActivity {
                 case R.id.nav_feed:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, FeedFragment.newInstance()).commit();
                     return true;
+            }
+            switch (menuItem.getItemId()){
+                case R.id.nav_map:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, MapFragment.newInstance()).commit();
+                    return true;
+
             }
             return true;
         });
