@@ -33,6 +33,7 @@ public class FeedFragment extends BaseFragment {
     private DatabaseReference userDb;
     private FirebaseUser user;
     private String userID;
+    private String currentUserID;
 
     List<Cards> rowItems;
 
@@ -92,6 +93,7 @@ public class FeedFragment extends BaseFragment {
                 String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
                 petsDb.child(petsID).child("connections").child("matches").child(userID).child("ChatId").setValue(key);
                 userDb.child(userID).child("connections").child("matches").child(petsID).child("ChatId").setValue(key);
+                userDb.child(userID).child("connections").child("matches").child(petsID).child("userID").setValue(key);
                 Toast.makeText(getContext(), "Right", Toast.LENGTH_SHORT).show();
             }
 
@@ -122,7 +124,8 @@ public class FeedFragment extends BaseFragment {
                             dataSnapshot.exists()
                                     && !dataSnapshot.child("connections").child("nope").hasChild(userID)
                                     && !dataSnapshot.child("connections").child("yeps").hasChild(userID)
-                                    && !dataSnapshot.child("userID").getValue().toString().equals(userID)
+                                    && !dataSnapshot.child("" +
+                                    "").getValue().toString().equals(userID)
                     ) {
                         //Проверяем картиночку
                         String profileImageUrl = "default";
@@ -130,6 +133,9 @@ public class FeedFragment extends BaseFragment {
                             profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
                         }
                         //
+
+
+
                         Cards item = new Cards(dataSnapshot.getKey(),
                                 dataSnapshot.child("name").getValue().toString(), profileImageUrl);
 
