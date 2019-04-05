@@ -53,6 +53,10 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, FeedFragment.newInstance()).commit();
+        }
+
     }
 
 }
