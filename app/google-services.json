@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "589544002508",
+    "firebase_url": "https://petslander.firebaseio.com",
+    "project_id": "petslander",
+    "storage_bucket": "petslander.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589544002508:android:9fc7d2317b60fc16",
+        "android_client_info": {
+          "package_name": "ru.codeoverflow.petlander"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589544002508-screvdasvfs5il07ck1cf8ijt2ior4q4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.codeoverflow.petlander",
+            "certificate_hash": "d565e7157d6b05bfa2d52afcab1b189d04e668d4"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuKdnifrb95HvoGvYEPBcT3g-j8tZX9LM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589544002508-cbtpj3bjber0uhh2076pss05qd5m95gd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
