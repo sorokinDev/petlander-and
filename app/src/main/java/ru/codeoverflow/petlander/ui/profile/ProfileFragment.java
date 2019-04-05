@@ -31,11 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import ru.codeoverflow.petlander.R;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
-import ru.codeoverflow.petlander.R;
 import ru.codeoverflow.petlander.ui.base.BaseFragment;
 import ru.codeoverflow.petlander.util.NavUtil;
 import ru.codeoverflow.petlander.util.SharedPrefUtil;
