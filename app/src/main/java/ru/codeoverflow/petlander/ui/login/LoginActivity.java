@@ -19,7 +19,6 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     protected void loginClick() {
-        SharedPrefUtil.setUserAuthorized();
-        NavUtil.toMain(this);
+        NavUtil.toFirebase(this);
     }
 }
