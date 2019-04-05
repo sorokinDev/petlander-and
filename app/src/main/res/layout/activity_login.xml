@@ -11,49 +11,51 @@
         android:id="@+id/tv_petlander"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/petlander"
-        app:layout_constraintBottom_toTopOf="@+id/tv_stay_at_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textAlignment="center"
         android:textColor="#ffffff"
-        android:textSize="60sp" />
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_stay_at_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
         android:text="@string/stay_at_home"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_petlander" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="28dp"
-        android:insetBottom="0dp"
         android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/login"
+        android:textColor="#4d4d4d"
+        app:backgroundTint="@android:color/white"
+        app:cornerRadius="8dp"
         app:layout_constraintBottom_toTopOf="@+id/iv_login_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:backgroundTint="@android:color/white"
-        app:cornerRadius="8dp"
-        android:textColor="#4d4d4d"
-        android:text="@string/login"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_stay_at_home" />
 
     <ImageView
         android:id="@+id/iv_login_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/login_dog"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
