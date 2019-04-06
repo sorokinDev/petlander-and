@@ -159,29 +159,26 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
                 ref.putStream(new FileInputStream(compressedImage))
                         .addOnSuccessListener(taskSnapshot -> {
                             progressDialog.dismiss();
-                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String downloadUrl = uri.toString();
-                                    DatabaseReference petsDb = FirebaseDatabase.getInstance().getReference().child("Pets");
-                                    Pet pet = new Pet();
-                                    pet.description = desc;
-                                    pet.name = "Name";
-                                    pet.profileImageUrl = downloadUrl;
-                                    if(marker != null) {
-                                        pet.geoX = marker.getPosition().latitude;
-                                        pet.geoY = marker.getPosition().longitude;
-                                    }else {
-                                        pet.geoX = 45;
-                                        pet.geoY = 56;
-                                    }
-                                    pet.userID = FirebaseAuth.getInstance().getUid();
-                                    petsDb.push().setValue(pet).addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
-                                    }).addOnFailureListener(e -> {
-                                        Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
-                                    });
+                            ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String downloadUrl = uri.toString();
+                                DatabaseReference petsDb = FirebaseDatabase.getInstance().getReference().child("Pets");
+                                Pet pet = new Pet();
+                                pet.description = desc;
+                                pet.name = "Name";
+                                pet.profileImageUrl = downloadUrl;
+                                if(marker != null) {
+                                    pet.geoX = marker.getPosition().latitude;
+                                    pet.geoY = marker.getPosition().longitude;
+                                }else {
+                                    pet.geoX = 45;
+                                    pet.geoY = 56;
                                 }
+                                pet.userID = FirebaseAuth.getInstance().getUid();
+                                petsDb.push().setValue(pet).addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
+                                }).addOnFailureListener(e -> {
+                                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+                                });
                             });
 
                         })
