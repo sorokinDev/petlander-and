@@ -74,6 +74,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
     protected void onSetupView(View rootView, Bundle saved) {
         ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String bestProvider = locationManager.getBestProvider(criteria, true);
@@ -127,13 +128,11 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
                                  Log.e("MAP", "OK");
                              }catch (Exception e) {}
                          }
-                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                             @Override
-                             public boolean onMarkerClick(Marker marker) {
-                                 DataSnapshot data = (DataSnapshot)marker.getTag();
+                         mMap.setOnMarkerClickListener(marker -> {
+                             DataSnapshot data = (DataSnapshot)marker.getTag();
+                             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-                                 return false;
-                             }
+                             return false;
                          });
                      }
 
