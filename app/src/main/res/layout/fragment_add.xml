@@ -29,32 +29,50 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
+                android:id="@+id/layout_add_photo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="86dp"
+                android:layout_marginBottom="8dp"
                 android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/til_description"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="86dp">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <ImageView
                     android:id="@+id/iv_add_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_photo"
-                    android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_add_photo" />
 
                 <TextView
                     android:id="@+id/tv_add_photo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/add_photo"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimary"
-                    android:text="@string/add_photo"
-                    android:textStyle="bold"
                     android:textSize="16sp"
-                    android:layout_marginTop="16dp"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_selected"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/til_description"
+                android:layout_margin="16dp"
+                android:adjustViewBounds="false"
+                android:scaleType="centerCrop"
+                android:visibility="gone"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCxa6NzHk1J8moB_s41m58khY2G-9pu3As"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAuKdnifrb95HvoGvYEPBcT3g-j8tZX9LM"/>
         <activity android:name=".ui.login.FirebaseActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.chat.ChatActivity" />
