@@ -11,6 +11,7 @@ import ru.codeoverflow.petlander.ui.add.AddFragment;
 import ru.codeoverflow.petlander.ui.base.BaseActivity;
 import ru.codeoverflow.petlander.ui.feed.FeedFragment;
 import ru.codeoverflow.petlander.ui.map.MapFragment;
+import ru.codeoverflow.petlander.ui.matches.MatchesFragment;
 import ru.codeoverflow.petlander.ui.profile.ProfileFragment;
 import ru.codeoverflow.petlander.util.NavUtil;
 import ru.codeoverflow.petlander.util.SharedPrefUtil;
@@ -44,11 +45,12 @@ public class MainActivity extends BaseActivity {
                 case R.id.nav_add:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, AddFragment.newInstance()).commit();
                     return true;
+                case R.id.nav_favorites:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, MatchesFragment.newInstance()).commit();
+                    return true;
                 case R.id.nav_account:
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_content, ProfileFragment.newInstance()).commit();
                     return true;
-
-
             }
             return true;
         });

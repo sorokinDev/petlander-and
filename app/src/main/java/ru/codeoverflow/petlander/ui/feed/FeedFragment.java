@@ -12,7 +12,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class FeedFragment extends BaseFragment {
     private DatabaseReference userDb;
     private FirebaseUser user;
     private String userID;
-    private String currentUserID;
 
     List<Cards> rowItems;
 
@@ -80,7 +78,7 @@ public class FeedFragment extends BaseFragment {
             @Override
             public void onLeftCardExit(Object dataObject) {
                 Cards obj = (Cards) dataObject;
-                String petsID = obj.getUserId();
+                String petsID = obj.getPetsID();
                 petsDb.child(petsID).child("connections").child("nope").child(userID).setValue(true);
                 Toast.makeText(getContext(), "Left", Toast.LENGTH_SHORT).show();
             }
@@ -88,12 +86,16 @@ public class FeedFragment extends BaseFragment {
             @Override
             public void onRightCardExit(Object dataObject) {
                 Cards obj = (Cards) dataObject;
-                String petsID = obj.getUserId();
+                String petsID = obj.getPetsID();
+                String userPet = obj.getUserID();
+
                 petsDb.child(petsID).child("connections").child("yeps").child(userID).setValue(true);
                 String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
                 petsDb.child(petsID).child("connections").child("matches").child(userID).child("ChatId").setValue(key);
                 userDb.child(userID).child("connections").child("matches").child(petsID).child("ChatId").setValue(key);
                 userDb.child(userID).child("connections").child("matches").child(petsID).child("userID").setValue(key);
+                userDb.child(userPet).child("connections").child("matches").child(userID).child("ChatId").setValue(key);
                 Toast.makeText(getContext(), "Right", Toast.LENGTH_SHORT).show();
             }
 
@@ -106,10 +108,8 @@ public class FeedFragment extends BaseFragment {
             }
         });
 
-
-        // Optionally add an OnItemClickListener
         flingContainer.setOnItemClickListener((itemPosition, dataObject) ->
-                Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show());
+                Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_SHORT).show()); // Метод обрабатывающий нажатие на tinder карточку
     }
 
     private void getPets(String userID){
@@ -117,29 +117,22 @@ public class FeedFragment extends BaseFragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.child("userID").getValue() != null) {
-                    if (
-                            // Connections выступает в роли понравилась собака или нет
-                            // Что бы в след раз её не показывать
-                            // Connections находится в ячейке DB : Pets
-                            dataSnapshot.exists()
+                    if (dataSnapshot.exists()
                                     && !dataSnapshot.child("connections").child("nope").hasChild(userID)
                                     && !dataSnapshot.child("connections").child("yeps").hasChild(userID)
-                                    && !dataSnapshot.child("" +
-                                    "").getValue().toString().equals(userID)
+                                    && !dataSnapshot.child("userID").getValue().toString().equals(userID)
                     ) {
-                        //Проверяем картиночку
                         String profileImageUrl = "default";
                         if (!dataSnapshot.child("profileImageUrl").getValue().equals("default")) {
                             profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
                         }
-                        //
+                        Cards item = new Cards(
+                                dataSnapshot.getKey(),
+                                dataSnapshot.child("name").getValue().toString(),
+                                profileImageUrl,
+                                dataSnapshot.child("userID").getValue().toString());
 
-
-
-                        Cards item = new Cards(dataSnapshot.getKey(),
-                                dataSnapshot.child("name").getValue().toString(), profileImageUrl);
-
-                        rowItems.add(item); // Добавляем
+                        rowItems.add(item);
                         FindArrayAdapter.notifyDataSetChanged();
                     }
                 }
