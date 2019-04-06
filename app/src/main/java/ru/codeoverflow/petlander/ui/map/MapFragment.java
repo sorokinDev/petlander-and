@@ -1,6 +1,7 @@
 package ru.codeoverflow.petlander.ui.map;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -152,6 +153,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    @SuppressLint("MissingPermission")
     @AfterPermissionGranted(1)
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};

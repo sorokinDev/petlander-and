@@ -84,7 +84,12 @@ public class AddFragment extends BaseFragment {
 
     @OnClick(R.id.btn_add)
     protected void onAddClick() {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+        if(getActivity() != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fl_content, AddMapFragment.newInstance()).addToBackStack("addMap").commit();
+        }
+
+        /*FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
 
         if(imageUri != null)
@@ -94,26 +99,13 @@ public class AddFragment extends BaseFragment {
 
             StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
             ref.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred()/taskSnapshot
-                                .getTotalByteCount());
-                    }
+                .addOnSuccessListener(taskSnapshot -> progressDialog.dismiss())
+                .addOnFailureListener(e -> progressDialog.dismiss())
+                .addOnProgressListener(taskSnapshot -> {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()/taskSnapshot
+                            .getTotalByteCount());
                 });
-        }
+        }*/
     }
 
     public static AddFragment newInstance() {

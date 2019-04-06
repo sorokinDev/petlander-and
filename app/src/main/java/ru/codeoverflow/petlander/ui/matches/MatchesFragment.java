@@ -2,6 +2,8 @@ package ru.codeoverflow.petlander.ui.matches;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
 import ru.codeoverflow.petlander.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -69,65 +71,48 @@ public class MatchesFragment extends BaseFragment {
     }
 
     private void FetchMatchInformation(String key) {
+        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         DatabaseReference petsDb = FirebaseDatabase.getInstance().getReference().child("Pets").child(key);
         petsDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    String petsID = dataSnapshot.getKey();
-                    String name = "";
-                    String profileImageUrl = "";
-                    if(dataSnapshot.child("name").getValue()!=null){
-                        name = dataSnapshot.child("name").getValue().toString();
-                    }
-                    if(dataSnapshot.child("profileImageUrl").getValue()!=null){
-                        profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
-                    }
-
-
-                    MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl);
-                    resultsMatches.add(obj);
-                    mMatchesAdapter.notifyDataSetChanged();
+                    getUserMatch(dataSnapshot);
+                }
+                else{
+                    userDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshots) {
+                            if (dataSnapshots.exists()){
+                                getUserMatch(dataSnapshots);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseErrors) { }
+                    });
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
-
-        // Костыльное решение
-
-        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
-        userDB.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    String userID = dataSnapshot.getKey();
-                    String name = "";
-                    String profileImageUrl = "";
-                    if(dataSnapshot.child("name").getValue()!=null){
-                        name = dataSnapshot.child("name").getValue().toString();
-                    }
-                    if(dataSnapshot.child("profileImageUrl").getValue()!=null){
-                        profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
-                    }
-
-
-                    MatchesObject obj = new MatchesObject(userID, name, profileImageUrl);
-                    resultsMatches.add(obj);
-                    mMatchesAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
     }
+    private void getUserMatch(DataSnapshot dataSnapshot){
+        String petsID = dataSnapshot.getKey();
+        String name = "";
+        String profileImageUrl = "";
+        if(dataSnapshot.child("name").getValue()!=null){
+            name = dataSnapshot.child("name").getValue().toString();
+        }
+        if(dataSnapshot.child("profileImageUrl").getValue()!=null){
+            profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
+        }
+
+        MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl);
+        resultsMatches.add(obj);
+        mMatchesAdapter.notifyDataSetChanged();
+    }
+
     private ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
     private List<MatchesObject> getDataSetMatches() {
         return resultsMatches;
