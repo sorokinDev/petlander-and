@@ -68,59 +68,10 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
         Criteria criteria = new Criteria();
         String bestProvider = locationManager.getBestProvider(criteria, true);
 
-        if (ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
-        }
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if(location != null){
-            onLocationChanged(location);
-            Toast.makeText(getContext(), "Too", Toast.LENGTH_SHORT).show();
-        }
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Toast.makeText(getContext(), "Hie", Toast.LENGTH_SHORT).show();
-                latitude= location.getLatitude();
-                longitude=location.getLongitude();
-
-                LatLng loc = new LatLng(latitude, longitude);
-
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                Toast.makeText(getContext(), "onStatusChanged", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-                Toast.makeText(getContext(), "Hir", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Toast.makeText(getContext(), "Provider disabled", Toast.LENGTH_SHORT).show();
-            }
-        };
-        locationManager.requestLocationUpdates(bestProvider, 2000, 0,locationListener );
-
         mapView = (MapView) rootView.findViewById(R.id.map);
         mapView.onCreate(saved);
         mapView.onResume();
         mapView.getMapAsync(this);
-
-
     }
 
 
@@ -156,14 +107,17 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
                                                      for (DataSnapshot data : dataSnapshot.getChildren()) {
 
 
-                                                         geoX = (Long) data.child("geoX").getValue();
-                                                         geoY = (Long) data.child("geoY").getValue();
+                                                         try{
+                                                             geoX = (Long) data.child("geoX").getValue();
+                                                             geoY = (Long) data.child("geoY").getValue();
 
-                                                         LatLng position = new LatLng(geoX, geoY);
+                                                             LatLng position = new LatLng(geoX, geoY);
 
 
-                                                         mMap.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
-                                                         Log.e("MAP", "OK");
+                                                             mMap.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
+                                                             Log.e("MAP", "OK");
+                                                         }catch (Exception e) {}
+
                                                  }
                                              }
                                          }
@@ -174,12 +128,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
         );
 
         requestLocationPermission();
-
-
-
-
-
-
     }
 
     @Override
