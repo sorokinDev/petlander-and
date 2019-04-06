@@ -9,6 +9,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -18,7 +20,9 @@ import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import butterknife.BindView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 import ru.codeoverflow.petlander.MainActivity;
@@ -48,7 +53,10 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
     private LocationListener locationListener;
     private Double latitude;
     private Double longitude;
+    BottomSheetBehavior sheetBehavior;
 
+    @BindView(R.id.bottom_sheet)
+    LinearLayout layoutBottomSheet;
 
     public MapFragment() {
 
@@ -64,6 +72,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
     @Override
     protected void onSetupView(View rootView, Bundle saved) {
         ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
+        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String bestProvider = locationManager.getBestProvider(criteria, true);
@@ -101,31 +110,37 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
         mMap = googleMap;
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users");
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                                         @Override
-                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                                 if (dataSnapshot.exists()) {
-                                                     for (DataSnapshot data : dataSnapshot.getChildren()) {
+            @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                     if (dataSnapshot.exists()) {
+                         for (DataSnapshot data : dataSnapshot.getChildren()) {
 
 
-                                                         try{
-                                                             geoX = (Long) data.child("geoX").getValue();
-                                                             geoY = (Long) data.child("geoY").getValue();
+                             try{
+                                 geoX = (Long) data.child("geoX").getValue();
+                                 geoY = (Long) data.child("geoY").getValue();
 
-                                                             LatLng position = new LatLng(geoX, geoY);
+                                 LatLng position = new LatLng(geoX, geoY);
 
+                                 mMap.addMarker(new MarkerOptions().position(position)).setTag(data);
+                                 Log.e("MAP", "OK");
+                             }catch (Exception e) {}
+                         }
+                         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                             @Override
+                             public boolean onMarkerClick(Marker marker) {
+                                 DataSnapshot data = (DataSnapshot)marker.getTag();
 
-                                                             mMap.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
-                                                             Log.e("MAP", "OK");
-                                                         }catch (Exception e) {}
+                                 return false;
+                             }
+                         });
+                     }
 
-                                                 }
-                                             }
-                                         }
+             }
 
-                                         @Override
-                                         public void onCancelled(@NonNull DatabaseError databaseError) { }
-                                     }
-        );
+             @Override
+             public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
 
         requestLocationPermission();
     }
