@@ -92,10 +92,10 @@ public class FeedFragment extends BaseFragment {
                 petsDb.child(petsID).child("connections").child("yeps").child(userID).setValue(true);
                 String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
 
-                petsDb.child(petsID).child("connections").child("matches").child(userID).child("ChatId").setValue(key);
-                userDb.child(userID).child("connections").child("matches").child(petsID).child("ChatId").setValue(key);
-                userDb.child(userID).child("connections").child("matches").child(petsID).child("userID").setValue(key);
-                userDb.child(userPet).child("connections").child("matches").child(userID).child("ChatId").setValue(key);
+                petsDb.child(petsID).child("connections").child("matches").child(userID).child("ChatId").setValue(key); // Для отображения животных в Matches
+                userDb.child(userID).child("connections").child("matches").child(petsID).child("ChatId").setValue(key); // Записываем User'у Id чата с хозяином питомца
+                userDb.child(userID).child("connections").child("matches").child(petsID).child("userID").setValue(userPet); // Записываем User'a который хочет пристроить животное
+                userDb.child(userPet).child("connections").child("matches").child(userID).child("ChatId").setValue(key); // Записываем заинтересовавшихся людей
                 Toast.makeText(getContext(), "Right", Toast.LENGTH_SHORT).show();
             }
 

@@ -41,7 +41,6 @@ public class ChatActivity extends BaseActivity {
         setContentView(R.layout.activity_chat);
 
         matchId = getIntent().getExtras().getString("matchId");
-
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID)
@@ -50,7 +49,7 @@ public class ChatActivity extends BaseActivity {
 
         getChatId();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
         mChatLayoutManager = new LinearLayoutManager(ChatActivity.this);
@@ -61,12 +60,7 @@ public class ChatActivity extends BaseActivity {
         mSendEditText = (EditText) findViewById(R.id.message);
         mSendButton = (Button) findViewById(R.id.send);
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage();
-            }
-        });
+        mSendButton.setOnClickListener(view -> sendMessage());
     }
 
     private void sendMessage() {
@@ -143,12 +137,8 @@ public class ChatActivity extends BaseActivity {
             }
         });
     }
-
-
     private ArrayList<ChatObject> resultsChat = new ArrayList<ChatObject>();
     private List<ChatObject> getDataSetChat() {
         return resultsChat;
     }
-
-
 }
