@@ -25,16 +25,16 @@ public class FindArrayAdapter extends ArrayAdapter<Cards> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView name = convertView.findViewById(R.id.name);
-        ImageView image = convertView.findViewById(R.id.image);
+        TextView name = convertView.findViewById(R.id.tv_desc);
+        ImageView image = convertView.findViewById(R.id.image_card);
 
-        name.setText(card_item.getName());
+        name.setText(card_item.getDescription());
         switch(card_item.getProfileImageUrl()){
             case "default":
                 Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
                 break;
             default:
-                Glide.clear(image);
+                //Glide.clear(image);
                 Glide.with(convertView.getContext()).load(card_item.getProfileImageUrl()).into(image);
                 break;
         }

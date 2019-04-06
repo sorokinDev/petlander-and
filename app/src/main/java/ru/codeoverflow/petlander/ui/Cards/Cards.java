@@ -4,14 +4,24 @@ public class Cards {
 
     private String petsID;
     private String name;
+    private String description;
     private String profileImageUrl;
     private String userID;
 
-    public Cards(String petsID, String name, String profileImageUrl, String userID){
+    public Cards(String petsID, String name, String profileImageUrl, String userID, String desc){
         this.petsID = petsID;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.userID = userID;
+        this.description = desc;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPetsID(){
