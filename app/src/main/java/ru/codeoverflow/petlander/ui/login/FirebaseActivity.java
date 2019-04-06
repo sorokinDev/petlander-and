@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.FirebaseDatabase;
 
 import ru.codeoverflow.petlander.util.NavUtil;
 import ru.codeoverflow.petlander.util.SharedPrefUtil;
@@ -28,8 +30,6 @@ import java.util.Objects;
 public class FirebaseActivity extends BaseActivity {
 
     private static final int RC_SIGN_IN = 1787;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @BindView(R.id.til_name)
     TextInputLayout tilName;
@@ -47,15 +47,6 @@ public class FirebaseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase);
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseAuthStateListener = firebaseAuth -> {
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                Log.i("Creates","User not null");
-                SharedPrefUtil.setUserAuthorized();
-                NavUtil.toMain(this);
-            }
-        };
         List<AuthUI.IdpConfig> providers = Arrays.asList(new AuthUI.IdpConfig.PhoneBuilder().build());
 
         startActivityForResult(
@@ -72,7 +63,18 @@ public class FirebaseActivity extends BaseActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).
+                        child("achivment").child("first_step").setValue(false);
+                FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).
+                        child("achivment").child("cash_hurt").setValue(false);
+                FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).
+                        child("achivment").child("society").setValue(false);
+                FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).
+                        child("achivment").child("get_in_taste").setValue(false);
                 if (user != null){
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid()).
+                            child("achivment").child("first_step").setValue(true);
+                    Toast.makeText(this,"OK",Toast.LENGTH_SHORT).show();
                     onSuccessAuth(user);
                 }
             }
@@ -82,6 +84,7 @@ public class FirebaseActivity extends BaseActivity {
     protected void onSuccessAuth(FirebaseUser user) {
         if (TextUtils.isEmpty(user.getDisplayName())) {
             loginInfoLayout.setVisibility(View.VISIBLE);
+
         }else {
             onAuthInfoFilled();
         }
@@ -109,12 +112,10 @@ public class FirebaseActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(firebaseAuthStateListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.removeAuthStateListener(firebaseAuthStateListener);
     }
 }
