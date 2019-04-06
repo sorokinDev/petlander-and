@@ -85,8 +85,13 @@ public class AddFragment extends BaseFragment {
     @OnClick(R.id.btn_add)
     protected void onAddClick() {
         if(getActivity() != null) {
+            String desc = "";
+            if(etDesc.getText() != null) {
+                desc = etDesc.getText().toString();
+            }
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fl_content, AddMapFragment.newInstance()).addToBackStack("addMap").commit();
+                    .add(R.id.fl_content, AddMapFragment.newInstance(imageUri.toString(), desc))
+                    .addToBackStack("addMap").commit();
         }
 
         /*FirebaseStorage storage = FirebaseStorage.getInstance();
