@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -45,13 +48,14 @@ import ru.codeoverflow.petlander.ui.base.BaseFragment;
 import ru.codeoverflow.petlander.R;
 
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
+import static ru.codeoverflow.petlander.App.getApplication;
 
 public class MapFragment extends BaseFragment implements OnMapReadyCallback,LocationSource.OnLocationChangedListener {
 
     private GoogleMap mMap;
     private MapView mapView;
-    protected Long geoX;
-    protected Long geoY;
+    protected Double geoX;
+    protected Double geoY;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Double latitude;
@@ -112,28 +116,44 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users");
+        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Pets");
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
                      if (dataSnapshot.exists()) {
                          for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-
                              try{
-                                 geoX = (Long) data.child("geoX").getValue();
-                                 geoY = (Long) data.child("geoY").getValue();
+                                 geoX = (Double) data.child("geoX").getValue();
+                                 geoY = (Double) data.child("geoY").getValue();
 
                                  LatLng position = new LatLng(geoX, geoY);
 
                                  mMap.addMarker(new MarkerOptions().position(position)).setTag(data);
                                  Log.e("MAP", "OK");
-                             }catch (Exception e) {}
+                             }
+                             catch (Exception e) {}
                          }
                          mMap.setOnMarkerClickListener(marker -> {
                              DataSnapshot data = (DataSnapshot)marker.getTag();
                              sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
+                             String description = data.child("description").getValue().toString();
+                             String profileImageUrl;
+                             ImageView imageView = rootView.findViewById(R.id.imgPet);
+                             Glide.clear(imageView);
+                             if(data.child("profileImageUrl").getValue()!=null){
+                                 profileImageUrl = data.child("profileImageUrl").getValue().toString();
+                                 switch(profileImageUrl){
+                                     case "default":
+                                         Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(imageView);
+                                         break;
+                                     default:
+                                         Glide.with(getApplication()).load(profileImageUrl).into(imageView);
+                                         break;
+                                 }
+                             }
+                             // Все работает , может долго грузить, около 8-9 секунд
+                             TextView textView_description = (TextView)rootView.findViewById(R.id.description);
+                             textView_description.setText(description);
                              return false;
                          });
                      }
