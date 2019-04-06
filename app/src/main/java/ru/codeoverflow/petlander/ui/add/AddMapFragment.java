@@ -1,22 +1,29 @@
 package ru.codeoverflow.petlander.ui.add;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.Constants;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +46,7 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MapView mapView;
+    private Marker marker;
     protected Long geoX;
     protected Long geoY;
 
@@ -63,29 +71,13 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users");
-        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
-              @Override
-              public void onDataChange(DataSnapshot dataSnapshot) {
-                  if (dataSnapshot.exists()) {
-                      for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-
-                          geoX = (Long) data.child("geoX").getValue();
-                          geoY = (Long) data.child("geoY").getValue();
-
-                          LatLng position = new LatLng(geoX, geoY);
-
-
-                          mMap.addMarker(new MarkerOptions().position(position).title("Marker in Sydney"));
-                          Log.e("MAP", "OK");
-                      }
-                  }
-              }
-
-              @Override
-              public void onCancelled(@NonNull DatabaseError databaseError) { }
-          });
+        mMap.setOnMapClickListener(latLng -> {
+            if(marker != null) {
+                marker.remove();
+            }
+            marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Местоположение собаки"));
+        });
 
         requestLocationPermission();
 
@@ -98,12 +90,21 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    @SuppressLint("MissingPermission")
     @AfterPermissionGranted(1)
     public void requestLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if(EasyPermissions.hasPermissions(getContext(), perms)) {
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(() -> false);
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            mFusedLocationClient
+                    .getLastLocation()
+                    .addOnSuccessListener(getActivity(), location -> {
+                        if (location != null) {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),15));
+                        }
+                    });
         }
         else {
             EasyPermissions.requestPermissions(this, "Please grant the location permission", 1, perms);
