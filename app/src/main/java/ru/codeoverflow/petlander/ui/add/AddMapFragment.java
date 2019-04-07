@@ -98,7 +98,6 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
 
     @Override
     protected void onSetupView(View rootView, Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
 
         mapView = (MapView) rootView.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);

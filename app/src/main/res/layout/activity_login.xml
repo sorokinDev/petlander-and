@@ -6,31 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context=".ui.login.LoginActivity">
-
-    <TextView
-        android:id="@+id/tv_petlander"
-        android:layout_width="0dp"
+    
+    <ImageView
+        android:id="@+id/logo_login"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/petlander"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/petlander_logo_login"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_stay_at_home"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/stay_at_home"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_petlander" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
@@ -48,7 +33,7 @@
         app:layout_constraintBottom_toTopOf="@+id/iv_login_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_stay_at_home" />
+        app:layout_constraintTop_toBottomOf="@+id/logo_login" />
 
     <ImageView
         android:id="@+id/iv_login_image"

@@ -82,7 +82,6 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     protected void onSetupView(View rootView,Bundle saved) {
-        ((AppCompatActivity)getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         mNameField = (EditText)rootView.findViewById(R.id.name);
         mPhoneField = (EditText)rootView.findViewById(R.id.phone);
 

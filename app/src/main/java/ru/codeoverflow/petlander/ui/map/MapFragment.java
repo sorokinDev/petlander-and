@@ -80,7 +80,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
 
     @Override
     protected void onSetupView(View rootView, Bundle saved) {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         layoutBottomSheet.setOnTouchListener(new View.OnTouchListener() {

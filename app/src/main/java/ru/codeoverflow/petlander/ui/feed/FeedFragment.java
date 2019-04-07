@@ -48,7 +48,6 @@ public class FeedFragment extends BaseFragment {
 
     @Override
     protected void onSetupView(View rootView, Bundle saved) {
-        ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(rootView.findViewById(R.id.toolbar));
 
         petsDb = FirebaseDatabase.getInstance().getReference().child("Pets");
         userDb = FirebaseDatabase.getInstance().getReference().child("Users");

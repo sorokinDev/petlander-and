@@ -8,13 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            style="@style/AppTheme.Toolbar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:background="@color/colorPrimary"
-            app:title="Hello"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/petlander_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.gms.maps.MapView android:id="@+id/map"
             android:layout_width="match_parent"

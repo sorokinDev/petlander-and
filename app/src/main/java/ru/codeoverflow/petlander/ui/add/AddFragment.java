@@ -35,7 +35,6 @@ import ru.codeoverflow.petlander.ui.base.BaseFragment;
 public class AddFragment extends BaseFragment {
     private static final int RC_PICK_IMAGE = 732;
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.layout_add_photo) View layoutAddPhoto;
     @BindView(R.id.iv_selected) ImageView ivSelected;
     @BindView(R.id.til_description) TextInputLayout tilDesc;
@@ -50,7 +49,7 @@ public class AddFragment extends BaseFragment {
 
     @Override
     protected void onSetupView(View rootView, Bundle savedInstanceState) {
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
     }
 
     @OnClick(R.id.layout_add_photo)

@@ -77,6 +77,8 @@ public class FirebaseActivity extends BaseActivity {
                     Toast.makeText(this,"OK",Toast.LENGTH_SHORT).show();
                     onSuccessAuth(user);
                 }
+            }else{
+                NavUtil.toLogin(this);
             }
         }
     }
