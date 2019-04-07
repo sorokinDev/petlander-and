@@ -84,8 +84,6 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private MapView mapView;
     private Marker marker;
-    protected Long geoX;
-    protected Long geoY;
 
     private Uri imageUri;
     private String desc;
@@ -194,20 +192,18 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
                                         .fetch(new Callback() {
                                             @Override
                                             public void onSuccess(@NotNull Response response) {
-                                                for (Result result : response.getResults()) {
-                                                    Log.e("Suc", result.getFormattedAddress());
+                                                Result result = response.getResults()[0];
+                                                Log.e("Suc", result.getFormattedAddress());
 
-                                                    String address = result.getFormattedAddress();
-                                                    pet.address = address;
-                                                    pet.userID = FirebaseAuth.getInstance().getUid();
+                                                String address = result.getFormattedAddress();
+                                                pet.address = address;
+                                                pet.userID = FirebaseAuth.getInstance().getUid();
 
-                                                    petsDb.push().setValue(pet).addOnSuccessListener(aVoid -> {
-                                                        Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
-                                                    }).addOnFailureListener(e -> {
-                                                        Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
-                                                    });
-
-                                                }
+                                                petsDb.push().setValue(pet).addOnSuccessListener(aVoid -> {
+                                                    Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
+                                                }).addOnFailureListener(e -> {
+                                                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+                                                });
                                             }
 
                                             @Override
