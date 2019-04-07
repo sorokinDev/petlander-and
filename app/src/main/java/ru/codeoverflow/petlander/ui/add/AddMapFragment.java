@@ -188,7 +188,7 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
                                     pet.geoX = 45;
                                     pet.geoY = 56;
                                 }
-                                new CoordinateGeocoder(pet.geoX, pet.geoY,getString(R.string.google_maps_key))
+                                new CoordinateGeocoder(pet.geoX, pet.geoY,getString(R.string.geocode_key))
                                         .setLanguage("ru")
                                         .setLocationTypes(LocationType.ROOFTOP)
                                         .setResultTypes(AddressType.STREET_ADDRESS)
