@@ -1,6 +1,8 @@
 package ru.codeoverflow.petlander.ui.matches;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import ru.codeoverflow.petlander.R;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+import ru.codeoverflow.petlander.ui.chat.ChatActivity;
+import ru.codeoverflow.petlander.util.NavUtil;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>{
     private List<MatchesObject> matchesList;
@@ -38,6 +42,16 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders>{
         MatchesObject match = matchesList.get(position);
         holder.matchDesc.setText(match.getDescription());
         holder.matchLocation.setText(match.getLocation());
+        holder.ivMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), ChatActivity.class);
+                Bundle b = new Bundle();
+                b.putString("matchId", match.getUserId());
+                intent.putExtras(b);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
         if(!match.getProfileImageUrl().equals("default")){
             Glide.with(context).load(match.getProfileImageUrl()).into(holder.matchImage);
         }

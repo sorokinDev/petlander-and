@@ -26,10 +26,11 @@
             android:hint="message..."
             android:id="@+id/message"
             />
-        <Button
+        <ImageView
             android:layout_weight="0.2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_msg"
             android:text="Send"
             android:id="@+id/send"/>
     </LinearLayout>

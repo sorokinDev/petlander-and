@@ -1,9 +1,12 @@
 package ru.codeoverflow.petlander.ui.chat;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+
 import ru.codeoverflow.petlander.R;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +33,7 @@ public class ChatActivity extends BaseActivity {
 
     private EditText mSendEditText;
 
-    private Button mSendButton;
+    private ImageView mSendButton;
 
     private String currentUserID, matchId, chatId;
 
@@ -58,7 +61,7 @@ public class ChatActivity extends BaseActivity {
         mRecyclerView.setAdapter(mChatAdapter);
 
         mSendEditText = (EditText) findViewById(R.id.message);
-        mSendButton = (Button) findViewById(R.id.send);
+        mSendButton = findViewById(R.id.send);
 
         mSendButton.setOnClickListener(view -> sendMessage());
     }

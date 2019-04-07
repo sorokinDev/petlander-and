@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,9 +57,7 @@ public class ProfileFragment extends BaseFragment {
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
 
-    private EditText mNameField, mPhoneField;
-
-    private Button mBack, mConfirm;
+    @BindView(R.id.tv_name) protected TextView tvName;
 
     private ImageView mProfileImage;
 
@@ -82,13 +81,9 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     protected void onSetupView(View rootView,Bundle saved) {
-        mNameField = (EditText)rootView.findViewById(R.id.name);
-        mPhoneField = (EditText)rootView.findViewById(R.id.phone);
 
         mProfileImage = (ImageView)rootView.findViewById(R.id.profileImage);
 
-        mBack = (Button)rootView.findViewById(R.id.back);
-        mConfirm = (Button)rootView.findViewById(R.id.confirm);
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
@@ -163,19 +158,6 @@ public class ProfileFragment extends BaseFragment {
                 startActivityForResult(intent, 1);
             }
         });
-        mConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveUserInformation();
-            }
-        });
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().finish();
-                return;
-            }
-        });
     }
 
     @OnClick(R.id.btn_logout)
@@ -193,15 +175,8 @@ public class ProfileFragment extends BaseFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                    tvName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    if(map.get("name")!=null){
-                        name = map.get("name").toString();
-                        mNameField.setText(name);
-                    }
-                    if(map.get("phone")!=null){
-                        phone = map.get("phone").toString();
-                        mPhoneField.setText(phone);
-                    }
                     if(map.get("sex")!=null){
                         userSex = map.get("sex").toString();
                     }
@@ -229,13 +204,6 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void saveUserInformation() {
-        name = mNameField.getText().toString();
-        phone = mPhoneField.getText().toString();
-
-        Map userInfo = new HashMap();
-        userInfo.put("name", name);
-        userInfo.put("phone", phone);
-        mUserDatabase.updateChildren(userInfo);
         if(resultUri != null){
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
             Bitmap bitmap = null;
@@ -285,6 +253,7 @@ public class ProfileFragment extends BaseFragment {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
+            saveUserInformation();
         }
     }
     private ArrayList<Achivment> resultsAchivment = new ArrayList<Achivment>();

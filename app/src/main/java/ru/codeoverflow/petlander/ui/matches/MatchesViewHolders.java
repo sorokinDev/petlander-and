@@ -17,13 +17,14 @@ import ru.codeoverflow.petlander.ui.chat.ChatActivity;
 
 public class MatchesViewHolders extends RecyclerView.ViewHolder{
     public TextView matchLocation, matchDesc;
-    public ImageView matchImage;
+    public ImageView matchImage, ivMsg;
 
     public MatchesViewHolders(View itemView) {
         super(itemView);
         matchImage = itemView.findViewById(R.id.MatchImage);
         matchLocation = itemView.findViewById(R.id.tv_location);
         matchDesc = itemView.findViewById(R.id.tv_desc);
+        ivMsg = itemView.findViewById(R.id.iv_msg);
     }
 
 }
