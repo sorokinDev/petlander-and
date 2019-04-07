@@ -8,10 +8,21 @@ public class MatchesObject {
     private String userId;
     private String name;
     private String profileImageUrl;
-    public MatchesObject (String userId, String name, String profileImageUrl){
+    private String description;
+
+    public MatchesObject (String userId, String name, String profileImageUrl, String desc){
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+        this.description = desc;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUserId(){

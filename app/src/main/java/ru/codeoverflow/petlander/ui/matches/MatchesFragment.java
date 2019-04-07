@@ -1,9 +1,11 @@
 package ru.codeoverflow.petlander.ui.matches;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import ru.codeoverflow.petlander.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +36,21 @@ public class MatchesFragment extends BaseFragment {
         return new MatchesFragment();
     }
 
+    public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
+
+        private final int verticalSpaceHeight;
+
+        public VerticalSpaceItemDecoration(int verticalSpaceHeight) {
+            this.verticalSpaceHeight = verticalSpaceHeight;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            outRect.bottom = verticalSpaceHeight;
+        }
+    }
+
     @Override
     protected void onSetupView(View rootView,Bundle saved) {
 
@@ -46,6 +63,7 @@ public class MatchesFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mMatchesLayoutManager);
         mMatchesAdapter = new MatchesAdapter(getDataSetMatches(), getContext());
         mRecyclerView.setAdapter(mMatchesAdapter);
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(getResources().getDimensionPixelSize(R.dimen.favorite_cards_spacing)));
 
         getUserMatchId();
     }
@@ -101,14 +119,18 @@ public class MatchesFragment extends BaseFragment {
         String petsID = dataSnapshot.getKey();
         String name = "";
         String profileImageUrl = "";
+        String desc = "";
         if(dataSnapshot.child("name").getValue()!=null){
             name = dataSnapshot.child("name").getValue().toString();
         }
         if(dataSnapshot.child("profileImageUrl").getValue()!=null){
             profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
         }
+        if(dataSnapshot.child("description").getValue()!=null){
+            desc = dataSnapshot.child("description").getValue().toString();
+        }
 
-        MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl);
+        MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl, desc);
         resultsMatches.add(obj);
         mMatchesAdapter.notifyDataSetChanged();
     }

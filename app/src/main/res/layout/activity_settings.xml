@@ -5,8 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ru.codeoverflow.petlander.ui.profile.ProfileFragment"
-    android:orientation="vertical"
-    android:padding="20sp">
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        style="@style/AppTheme.Toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"/>
+
     <ImageView
         android:layout_width="100sp"
         android:layout_height="100sp"

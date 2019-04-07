@@ -17,6 +17,7 @@ import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.internal.Constants;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -66,7 +68,7 @@ import ru.codeoverflow.petlander.ui.map.MapFragment;
 public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
 
     @BindView(R.id.map) MapView map;
-
+    @BindView(R.id.btn_add_confirm) Button confirmBtn;
     private GoogleMap mMap;
     private MapView mapView;
     private Marker marker;
@@ -106,6 +108,7 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         mMap.setOnMapClickListener(latLng -> {
+            confirmBtn.setVisibility(View.VISIBLE);
             if(marker != null) {
                 marker.remove();
             }
