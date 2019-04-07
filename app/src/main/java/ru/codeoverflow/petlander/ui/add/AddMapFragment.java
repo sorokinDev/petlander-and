@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -43,6 +44,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -64,6 +68,14 @@ import ru.codeoverflow.petlander.R;
 import ru.codeoverflow.petlander.model.Pet;
 import ru.codeoverflow.petlander.ui.base.BaseFragment;
 import ru.codeoverflow.petlander.ui.map.MapFragment;
+import se.arbitur.geocoding.AddressGeocoder;
+import se.arbitur.geocoding.Callback;
+import se.arbitur.geocoding.CoordinateGeocoder;
+import se.arbitur.geocoding.Response;
+import se.arbitur.geocoding.Result;
+import se.arbitur.geocoding.constants.AddressType;
+import se.arbitur.geocoding.constants.LocationType;
+import se.arbitur.geocoding.models.Coordinate;
 
 public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
 
@@ -176,12 +188,36 @@ public class AddMapFragment extends BaseFragment implements OnMapReadyCallback {
                                     pet.geoX = 45;
                                     pet.geoY = 56;
                                 }
-                                pet.userID = FirebaseAuth.getInstance().getUid();
-                                petsDb.push().setValue(pet).addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
-                                }).addOnFailureListener(e -> {
-                                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
-                                });
+                                new CoordinateGeocoder(pet.geoX, pet.geoY,getString(R.string.google_maps_key))
+                                        .setLanguage("ru")
+                                        .setLocationTypes(LocationType.ROOFTOP)
+                                        .setResultTypes(AddressType.STREET_ADDRESS)
+                                        .fetch(new Callback() {
+                                            @Override
+                                            public void onSuccess(@NotNull Response response) {
+                                                for (Result result : response.getResults()) {
+                                                    Log.e("Suc", result.getFormattedAddress());
+
+                                                    String address = result.getFormattedAddress();
+                                                    pet.address = address;
+                                                    pet.userID = FirebaseAuth.getInstance().getUid();
+
+                                                    petsDb.push().setValue(pet).addOnSuccessListener(aVoid -> {
+                                                        Toast.makeText(getContext(), "Added", Toast.LENGTH_LONG).show();
+                                                    }).addOnFailureListener(e -> {
+                                                        Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+                                                    });
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(@Nullable Response response, @Nullable IOException e) {
+                                                Log.e("Coord", "Something went wrong");
+
+                                            }
+                                        });
+
                             });
 
                         })

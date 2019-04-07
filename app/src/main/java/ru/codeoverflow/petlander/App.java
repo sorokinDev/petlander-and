@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.multidex.MultiDex;
 import ru.codeoverflow.petlander.util.SharedPrefUtil;
 
 public class App extends Application {
@@ -15,6 +16,7 @@ public class App extends Application {
         super.onCreate();
         sApplication = this;
         SharedPrefUtil.init();
+        MultiDex.install(this);
     }
 
     public static Application getApplication() {

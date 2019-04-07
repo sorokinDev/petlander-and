@@ -6,5 +6,5 @@ public class Pet {
     public String name;
     public String profileImageUrl;
     public String userID;
-
+    public String address;
 }
