@@ -42,6 +42,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import butterknife.BindInt;
 import butterknife.BindView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -130,6 +131,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
                                  LatLng position = new LatLng(geoX, geoY);
 
                                  mMap.addMarker(new MarkerOptions().position(position)).setTag(data);
+
                                  Log.e("MAP", "OK");
                              }
                              catch (Exception e) {}
@@ -142,6 +144,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
                              String description = data.child("description").getValue().toString();
                              String profileImageUrl;
                              ImageView imageView = rootView.findViewById(R.id.iv_pet);
+                             TextView tvLocation = rootView.findViewById(R.id.tv_location);
+                             tvLocation.setText(data.child("address").getValue().toString());
                              Glide.clear(imageView);
                              if(data.child("profileImageUrl").getValue()!=null){
                                  profileImageUrl = data.child("profileImageUrl").getValue().toString();
