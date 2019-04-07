@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,10 +29,14 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import ru.codeoverflow.petlander.R;
 
 import androidx.annotation.NonNull;
@@ -45,6 +50,11 @@ import ru.codeoverflow.petlander.util.SharedPrefUtil;
 import static ru.codeoverflow.petlander.App.getApplication;
 
 public class ProfileFragment extends BaseFragment {
+
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mChatAdapter;
+    private RecyclerView.LayoutManager mChatLayoutManager;
 
     private EditText mNameField, mPhoneField;
 
@@ -84,7 +94,65 @@ public class ProfileFragment extends BaseFragment {
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
 
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(false);
+        mChatLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        mRecyclerView.setLayoutManager(mChatLayoutManager);
+
+        mChatAdapter = new AchivmentAdapter(getDataSet(),getContext());
+        mRecyclerView.setAdapter(mChatAdapter);
+
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+        mUserDatabase.child("achivment").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        try {
+
+                            Boolean achivment = (Boolean) data.getValue();
+                            if(achivment){
+
+
+                                FirebaseDatabase.getInstance().getReference().child("Achivment").
+                                        child(data.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                                        String descriptionAch = dataSnapshot.child("description").getValue().toString();
+                                        String nameAch = dataSnapshot.child("name").getValue().toString();
+
+
+                                            profileImageUrl = dataSnapshot.child("url").getValue().toString();
+                                        Achivment achivmentObj =new Achivment(nameAch,descriptionAch,profileImageUrl);
+                                        resultsAchivment.add(achivmentObj);
+                                        mChatAdapter.notifyDataSetChanged();
+                                        }
+
+
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }
+
+
+                        } catch (Exception e) {
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         getUserInfo();
 
@@ -219,6 +287,10 @@ public class ProfileFragment extends BaseFragment {
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
         }
+    }
+    private ArrayList<Achivment> resultsAchivment = new ArrayList<Achivment>();
+    private List<Achivment> getDataSet() {
+        return resultsAchivment;
     }
 
 }

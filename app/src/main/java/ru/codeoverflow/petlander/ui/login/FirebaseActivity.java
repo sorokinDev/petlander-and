@@ -82,6 +82,7 @@ public class FirebaseActivity extends BaseActivity {
     }
 
     protected void onSuccessAuth(FirebaseUser user) {
+        this.user = user;
         if (TextUtils.isEmpty(user.getDisplayName())) {
             loginInfoLayout.setVisibility(View.VISIBLE);
 
