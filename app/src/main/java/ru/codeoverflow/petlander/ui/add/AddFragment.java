@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -87,6 +90,15 @@ public class AddFragment extends BaseFragment {
             String desc = "";
             if(etDesc.getText() != null) {
                 desc = etDesc.getText().toString();
+            }
+
+            if(imageUri == null) {
+                Toast.makeText(getContext(), "Пожалуйста, выберите фото", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(TextUtils.isEmpty(desc)) {
+                Toast.makeText(getContext(), "Пожалуйста, добавьте описание", Toast.LENGTH_SHORT).show();
+                return;
             }
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(R.id.fl_content, AddMapFragment.newInstance(imageUri.toString(), desc))
