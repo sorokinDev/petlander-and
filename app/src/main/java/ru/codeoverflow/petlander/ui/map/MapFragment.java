@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -63,7 +65,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
     BottomSheetBehavior sheetBehavior;
 
     @BindView(R.id.bottom_sheet)
-    LinearLayout layoutBottomSheet;
+    ConstraintLayout layoutBottomSheet;
 
     public MapFragment() {
 
@@ -81,19 +83,19 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
         ((AppCompatActivity) getActivity()).setSupportActionBar(rootView.findViewById(R.id.toolbar));
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        layoutBottomSheet.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
 
         mapView = (MapView) rootView.findViewById(R.id.map);
         mapView.onCreate(saved);
         mapView.onResume();
         mapView.getMapAsync(this);
     }
-
-
-
-
 
 
     public static MapFragment newInstance() {
@@ -135,10 +137,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
                          }
                          mMap.setOnMarkerClickListener(marker -> {
                              DataSnapshot data = (DataSnapshot)marker.getTag();
-                             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                             if(sheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                             }
                              String description = data.child("description").getValue().toString();
                              String profileImageUrl;
-                             ImageView imageView = rootView.findViewById(R.id.imgPet);
+                             ImageView imageView = rootView.findViewById(R.id.iv_pet);
                              Glide.clear(imageView);
                              if(data.child("profileImageUrl").getValue()!=null){
                                  profileImageUrl = data.child("profileImageUrl").getValue().toString();
@@ -151,8 +155,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback,Loca
                                          break;
                                  }
                              }
-                             // Все работает , может долго грузить, около 8-9 секунд
-                             TextView textView_description = (TextView)rootView.findViewById(R.id.description);
+                             TextView textView_description = (TextView)rootView.findViewById(R.id.tv_desc);
                              textView_description.setText(description);
                              return false;
                          });
