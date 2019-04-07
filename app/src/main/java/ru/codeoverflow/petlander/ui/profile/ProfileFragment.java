@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.codeoverflow.petlander.R;
@@ -185,10 +188,26 @@ public class ProfileFragment extends BaseFragment {
                         profileImageUrl = map.get("profileImageUrl").toString();
                         switch(profileImageUrl){
                             case "default":
-                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
+                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).asBitmap().centerCrop().into(new BitmapImageViewTarget(mProfileImage) {
+                                    @Override
+                                    protected void setResource(Bitmap resource) {
+                                        RoundedBitmapDrawable circularBitmapDrawable =
+                                                RoundedBitmapDrawableFactory.create(getContext().getResources(), resource);
+                                        circularBitmapDrawable.setCircular(true);
+                                        mProfileImage.setImageDrawable(circularBitmapDrawable);
+                                    }
+                                });
                                 break;
                             default:
-                                Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                                Glide.with(getApplication()).load(profileImageUrl).asBitmap().centerCrop().into(new BitmapImageViewTarget(mProfileImage) {
+                                    @Override
+                                    protected void setResource(Bitmap resource) {
+                                        RoundedBitmapDrawable circularBitmapDrawable =
+                                                RoundedBitmapDrawableFactory.create(getContext().getResources(), resource);
+                                        circularBitmapDrawable.setCircular(true);
+                                        mProfileImage.setImageDrawable(circularBitmapDrawable);
+                                    }
+                                });
                                 break;
                         }
                     }
