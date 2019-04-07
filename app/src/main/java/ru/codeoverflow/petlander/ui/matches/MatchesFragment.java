@@ -120,6 +120,7 @@ public class MatchesFragment extends BaseFragment {
         String name = "";
         String profileImageUrl = "";
         String desc = "";
+        String location = "";
         if(dataSnapshot.child("name").getValue()!=null){
             name = dataSnapshot.child("name").getValue().toString();
         }
@@ -129,8 +130,11 @@ public class MatchesFragment extends BaseFragment {
         if(dataSnapshot.child("description").getValue()!=null){
             desc = dataSnapshot.child("description").getValue().toString();
         }
+        if(dataSnapshot.child("address").getValue()!=null){
+            location = dataSnapshot.child("address").getValue().toString();
+        }
 
-        MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl, desc);
+        MatchesObject obj = new MatchesObject(petsID, name, profileImageUrl, desc, location);
         resultsMatches.add(obj);
         mMatchesAdapter.notifyDataSetChanged();
     }

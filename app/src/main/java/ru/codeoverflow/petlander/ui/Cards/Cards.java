@@ -5,15 +5,25 @@ public class Cards {
     private String petsID;
     private String name;
     private String description;
+    private String location;
     private String profileImageUrl;
     private String userID;
 
-    public Cards(String petsID, String name, String profileImageUrl, String userID, String desc){
+    public Cards(String petsID, String name, String profileImageUrl, String userID, String desc, String location){
         this.petsID = petsID;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.userID = userID;
         this.description = desc;
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getDescription() {

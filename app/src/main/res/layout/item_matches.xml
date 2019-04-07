@@ -21,7 +21,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-
         <TextView
             android:id="@+id/tv_location"
             android:layout_width="0dp"
@@ -29,6 +28,8 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            tools:text="Адрес"
             app:layout_constraintTop_toBottomOf="@id/MatchImage"
             app:layout_constraintEnd_toEndOf="@id/tv_desc"
             app:layout_constraintStart_toStartOf="@id/tv_desc" />

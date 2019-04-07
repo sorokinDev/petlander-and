@@ -25,9 +25,11 @@ public class FindArrayAdapter extends ArrayAdapter<Cards> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
+        TextView location = convertView.findViewById(R.id.tv_location);
         TextView name = convertView.findViewById(R.id.tv_desc);
         ImageView image = convertView.findViewById(R.id.image_card);
 
+        location.setText(card_item.getLocation());
         name.setText(card_item.getDescription());
         switch(card_item.getProfileImageUrl()){
             case "default":

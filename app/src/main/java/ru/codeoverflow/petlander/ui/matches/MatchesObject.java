@@ -9,12 +9,14 @@ public class MatchesObject {
     private String name;
     private String profileImageUrl;
     private String description;
+    private String location;
 
-    public MatchesObject (String userId, String name, String profileImageUrl, String desc){
+    public MatchesObject (String userId, String name, String profileImageUrl, String desc, String location){
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.description = desc;
+        this.location = location;
     }
 
     public String getDescription() {
@@ -44,5 +46,13 @@ public class MatchesObject {
     }
     public void setProfileImageUrl(String profileImageUrl){
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

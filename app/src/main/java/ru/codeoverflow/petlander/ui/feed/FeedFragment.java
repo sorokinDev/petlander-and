@@ -130,7 +130,8 @@ public class FeedFragment extends BaseFragment {
                                 dataSnapshot.child("name").getValue().toString(),
                                 profileImageUrl,
                                 dataSnapshot.child("userID").getValue().toString(),
-                                dataSnapshot.child("description").getValue().toString());
+                                dataSnapshot.child("description").getValue().toString(),
+                                dataSnapshot.child("address").getValue().toString());
 
                         rowItems.add(item);
                         FindArrayAdapter.notifyDataSetChanged();
