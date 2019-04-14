@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.content.ContextCompat;
 import ru.codeoverflow.petlander.R;
 
 
@@ -43,13 +45,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
     public void onBindViewHolder(ChatViewHolders holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
         if(chatList.get(position).getCurrentUser()){
-            holder.mMessage.setGravity(Gravity.END);
-            holder.mMessage.setTextColor(Color.parseColor("#404040"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#F4F4F4"));
-        }else{
             holder.mMessage.setGravity(Gravity.START);
-            holder.mMessage.setTextColor(Color.parseColor("#FFFFFF"));
-            holder.mContainer.setBackgroundColor(Color.parseColor("#2DB4C8"));
+            holder.mMessage.setBackground(ContextCompat.getDrawable(context,R.drawable.back_message_me));
+
+        }else{
+            holder.mMessage.setGravity(Gravity.END);
+            holder.mMessage.setBackground(ContextCompat.getDrawable(context,R.drawable.back_message_you));
+
         }
 
     }
