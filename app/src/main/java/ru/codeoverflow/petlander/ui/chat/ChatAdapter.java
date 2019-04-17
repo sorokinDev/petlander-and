@@ -45,11 +45,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
     public void onBindViewHolder(ChatViewHolders holder, int position) {
         holder.mMessage.setText(chatList.get(position).getMessage());
         if(chatList.get(position).getCurrentUser()){
-            holder.mMessage.setGravity(Gravity.START);
+            holder.mImageViewRight.setVisibility(View.VISIBLE);
+            holder.mImageViewLeft.setVisibility(View.GONE);
+            holder.mContainer.setGravity(Gravity.RIGHT);
             holder.mMessage.setBackground(ContextCompat.getDrawable(context,R.drawable.back_message_me));
 
         }else{
-            holder.mMessage.setGravity(Gravity.END);
+            holder.mImageViewRight.setVisibility(View.GONE);
+            holder.mImageViewLeft.setVisibility(View.VISIBLE);
+            holder.mContainer.setGravity(Gravity.LEFT);
             holder.mMessage.setBackground(ContextCompat.getDrawable(context,R.drawable.back_message_you));
 
         }

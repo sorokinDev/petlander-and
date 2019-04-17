@@ -7,12 +7,15 @@
         android:padding="10dp"
         android:id="@+id/container"
         android:layout_gravity="bottom"
+
        >
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageCircleLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:gravity="right"/>
 
         <TextView
             android:id="@+id/message"
@@ -21,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/back_message_me"
+            android:background="@drawable/back_message_you"
             android:paddingLeft="22dp"
             android:paddingTop="13dp"
             android:paddingRight="22dp"
@@ -29,8 +32,18 @@
             android:text="Добрый день"
             android:textColor="#101036"
             android:textSize="20sp"
+            android:gravity="right"
 
             />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageCircleRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:visibility="gone"/>
 
 
 
