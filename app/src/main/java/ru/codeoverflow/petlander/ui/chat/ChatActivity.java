@@ -55,11 +55,14 @@ public class ChatActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(false);
-        mChatLayoutManager = new LinearLayoutManager(ChatActivity.this);
+        mChatLayoutManager = new LinearLayoutManager(ChatActivity.this /*,RecyclerView.VERTICAL,true*/);
+        ((LinearLayoutManager) mChatLayoutManager).setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mChatLayoutManager);
         mChatAdapter = new ChatAdapter(getDataSetChat(),this);
         mRecyclerView.setAdapter(mChatAdapter);
 
+
+        mRecyclerView.smoothScrollToPosition(getDataSetChat().size());
         mSendEditText = (EditText) findViewById(R.id.message);
         mSendButton = findViewById(R.id.send);
 
@@ -75,10 +78,12 @@ public class ChatActivity extends BaseActivity {
             Map newMessage = new HashMap();
             newMessage.put("createdByUser", currentUserID);
             newMessage.put("text", sendMessageText);
-
             newMessageDb.setValue(newMessage);
+
         }
         mSendEditText.setText(null);
+        ((LinearLayoutManager) mChatLayoutManager).setStackFromEnd(true);
+        mRecyclerView.smoothScrollToPosition(getDataSetChat().size());
     }
 
     private void getChatId(){

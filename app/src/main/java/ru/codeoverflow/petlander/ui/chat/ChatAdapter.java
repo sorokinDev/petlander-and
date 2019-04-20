@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
     private List<ChatObject> chatList;
     private Context context;
+    private RecyclerView recyclerView;
 
 
     public ChatAdapter(List<ChatObject> matchesList, Context context){
@@ -36,7 +37,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
+
         ChatViewHolders rcv = new ChatViewHolders(layoutView);
+
 
         return rcv;
     }
@@ -57,6 +60,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolders>{
             holder.mMessage.setBackground(ContextCompat.getDrawable(context,R.drawable.back_message_you));
 
         }
+
+
 
     }
 
